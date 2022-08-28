@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  email String @unique
+  name String?
+  lastname String?
+  role Role @default(USER)
+  rooms Room[]
+}
+
+model Category {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  title String
+  icon String?
+  rooms Room[]
+}
+
+model Room {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  price Int @default(0)
+  published Boolean @default(false)
+  title String @db.VarChar(255)
+  description String @db.VarChar(255)
+  address String?
+  author User? @relation(fields: [authorId], references: [id])
+  authorId Int?
+  category Category? @relation(fields: [categoryId], references: [id])
+  categoryId Int?
+  services ServiceOnRooms[]
+  pais Pais? @relation(fields: [paisId], references: [id])
+  paisId Int?
+}
+
+model Pais {
+  id Int @id @default(autoincrement())
+  title String
+  rooms Room[]
+}
+
+model Service {
+  id Int @id @default(autoincrement())
+  title String
+  rooms ServiceOnRooms[]
+}
+
+model ServiceOnRooms {
+  room Room @relation(fields: [roomId], references: [id])
+  roomId Int
+  service Service @relation(fields: [serviceId], references: [id])
+  serviceId Int
+
+  @@id([roomId, serviceId])
+}
+
+
