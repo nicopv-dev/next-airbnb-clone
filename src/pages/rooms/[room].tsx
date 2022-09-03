@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { GetServerSideProps, NextPage } from 'next';
+import { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next';
 import Room from '../../interfaces/Room';
 import MainLayout from '../../layouts/MainLayout';
 
@@ -8,7 +8,7 @@ interface IRoomProps {
   error?: boolean;
 }
 
-const Room: NextPage = ({ room, error }: IRoomProps) => {
+const Room: NextPage = ({ error, room }: IRoomProps) => {
   return (
     <MainLayout title="Room - Airbnb">
       <div>
@@ -34,7 +34,9 @@ const Room: NextPage = ({ room, error }: IRoomProps) => {
   );
 };
 
-export async function getServerSideProps(ctx): GetServerSideProps {
+export const getServerSideProps: GetServerSideProps = async (
+  ctx: GetServerSidePropsContext
+) => {
   const { room: id } = ctx.query;
   const prisma = new PrismaClient();
 
@@ -55,10 +57,10 @@ export async function getServerSideProps(ctx): GetServerSideProps {
 
   return {
     props: {
-      room: 'hola',
+      room: result,
       error: false,
     },
   };
-}
+};
 
 export default Room;

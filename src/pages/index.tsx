@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import type { GetStaticProps, NextPage } from 'next';
+import type { GetStaticProps } from 'next';
 import Categories from '../components/Home/Categories';
 import Filter from '../components/Home/Filter';
 import Rooms from '../components/Home/Rooms';
@@ -85,7 +85,7 @@ interface IHomeProps {
   categories: Category[];
 }
 
-const Home: NextPage = ({ categories }: IHomeProps) => {
+const Home = ({ categories }: IHomeProps) => {
   return (
     <MainLayout title="Alquiler de alojamiento - Airbnb">
       <div className="px-4 sm:px-10 md:px-20 py-8 mt-14">
@@ -99,7 +99,7 @@ const Home: NextPage = ({ categories }: IHomeProps) => {
   );
 };
 
-export async function getStaticProps(): GetStaticProps {
+export const getStaticProps: GetStaticProps = async () => {
   const prisma = new PrismaClient();
   const categories = await prisma.category.findMany({
     orderBy: {
@@ -110,6 +110,6 @@ export async function getStaticProps(): GetStaticProps {
   return {
     props: { categories: JSON.parse(JSON.stringify(categories)) },
   };
-}
+};
 
 export default Home;

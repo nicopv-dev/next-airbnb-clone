@@ -10,7 +10,7 @@ interface ICategoriesProps {
 interface ICategoryItemProps {
   category: Category;
   isActive: boolean;
-  onChangeCategoryActive: () => void;
+  onChangeCategoryActive: (id: number) => void;
 }
 
 export default function Categories({ categories }: ICategoriesProps) {

@@ -46,8 +46,8 @@ export default function RoomItem({ room }: IRoomItemProps) {
           thousandSeparator={true}
           prefix={'$'}
           className="font-bold mt-1"
-          renderText={(value, props) => (
-            <p {...props}>
+          renderText={(value: string) => (
+            <p>
               {value} CLP{' '}
               <span className="font-normal text-gray-500">/ noche</span>
             </p>
