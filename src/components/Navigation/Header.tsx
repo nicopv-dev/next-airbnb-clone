@@ -1,11 +1,18 @@
+import { useRouter } from 'next/router';
 import SearchBar from './SearchBar';
 
 export default function Header() {
+  const router = useRouter();
+
+  const goTo = (path: string): void => {
+    router.push(path);
+  };
+
   return (
     <header className="fixed top-0 left-0 z-20 bg-white w-full h-20 flex items-center justify-between px-4 sm:px-10 md:px-20 border-b border-b-slate-200">
       {/* left */}
       <div className="w-full">
-        <div className="w-24">
+        <div className="w-24 hover:cursor-pointer" onClick={() => goTo('/')}>
           <img
             src={'/images/logo.png'}
             alt="Airbnb logo"

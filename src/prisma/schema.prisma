@@ -49,6 +49,7 @@ model Room {
   services ServiceOnRooms[]
   pais Pais? @relation(fields: [paisId], references: [id])
   paisId Int?
+  images ImageOnRooms[]
 }
 
 model Pais {
@@ -72,4 +73,18 @@ model ServiceOnRooms {
   @@id([roomId, serviceId])
 }
 
+model Image {
+  id Int @id @default(autoincrement())
+  path String
+  rooms ImageOnRooms[]
+}
+
+model ImageOnRooms {
+  room Room @relation(fields: [roomId], references: [id])
+  roomId Int
+  image Image @relation(fields: [imageId], references: [id])
+  imageId Int
+
+  @@id([roomId,imageId])
+}
 

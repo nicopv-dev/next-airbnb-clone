@@ -18,15 +18,17 @@ export default function RoomItem({ room }: IRoomItemProps) {
   return (
     <div onClick={goTo} className="hover:cursor-pointer">
       <div className="relative">
-        <Image
-          alt={room.title}
-          src={room.image}
-          width={380}
-          height={380}
-          objectFit="cover"
-          className="rounded-2xl"
-          quality={100}
-        />
+        <div className="overflow-hidden rounded-2xl">
+          <Image
+            alt={room.title}
+            src={room.image}
+            width={380}
+            height={380}
+            objectFit="cover"
+            className="rounded-2xl transition-all duration-300 ease-out scale-100 hover:scale-105"
+            quality={100}
+          />
+        </div>
         <button className="absolute top-4 right-4">
           <FiHeart className="text-white h-5 w-5" />
         </button>
