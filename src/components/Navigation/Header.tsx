@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import SearchBar from './SearchBar';
 
@@ -13,9 +14,12 @@ export default function Header() {
       {/* left */}
       <div className="w-full">
         <div className="w-24 hover:cursor-pointer" onClick={() => goTo('/')}>
-          <img
+          <Image
             src={'/images/logo.png'}
             alt="Airbnb logo"
+            width={100}
+            height={100}
+            objectFit="contain"
             className="w-full object-cover"
           />
         </div>
