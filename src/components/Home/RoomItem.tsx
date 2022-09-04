@@ -22,7 +22,7 @@ export default function RoomItem({ room }: IRoomItemProps) {
           <Image
             alt={room.title}
             src={room.image}
-            width={380}
+            width={400}
             height={380}
             objectFit="cover"
             className="rounded-2xl transition-all duration-300 ease-out scale-100 hover:scale-105"

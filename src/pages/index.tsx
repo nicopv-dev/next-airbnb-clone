@@ -88,7 +88,7 @@ interface IHomeProps {
 const Home = ({ categories }: IHomeProps) => {
   return (
     <MainLayout title="Alquiler de alojamiento - Airbnb">
-      <div className="px-4 sm:px-10 md:px-20 py-8 mt-14">
+      <div className="px-4 sm:px-10 md:px-12 lg:px-20 py-8 mt-14">
         <div className="relative flex items-center justify-between gap-4 h-24">
           <Categories categories={categories} />
           <Filter />
