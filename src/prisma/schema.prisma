@@ -85,6 +85,6 @@ model ImageOnRooms {
   image Image @relation(fields: [imageId], references: [id])
   imageId Int
 
-  @@id([roomId,imageId])
+  @@id([roomId, imageId])
 }
 

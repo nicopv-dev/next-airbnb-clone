@@ -29,7 +29,17 @@ export default function Header() {
         <SearchBar />
       </div>
       {/* right */}
-      <div className="w-full flex justify-end">right</div>
+      <div className="w-full flex justify-end">
+        <button
+          type="button"
+          className="font-medium py-2 px-4 rounded-lg transition-all duration-200 ease-out bg-white hover:bg-gray-100"
+          onClick={() => goTo('/member')}
+        >
+          Hazte anfitrion
+        </button>
+        <div></div>
+        <div></div>
+      </div>
     </header>
   );
 }

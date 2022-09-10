@@ -5,6 +5,8 @@ import { FiChevronRight, FiChevronLeft } from 'react-icons/fi';
 
 interface ICategoriesProps {
   categories: Category[];
+  categoryActive: number;
+  onChangeCategoryActive: (id: number) => void;
 }
 
 interface ICategoryItemProps {
@@ -13,14 +15,10 @@ interface ICategoryItemProps {
   onChangeCategoryActive: (id: number) => void;
 }
 
-export default function Categories({ categories }: ICategoriesProps) {
-  const [categoryActive, setCategoryActive] = useState<number>(1);
+export default function Categories({ categories, categoryActive, onChangeCategoryActive }: ICategoriesProps) {
   const [isMoved, setIsMoved] = useState<boolean>(false);
   const categoriesRef = useRef<HTMLDivElement>(null);
 
-  const onChangeCategoryActive = (categoryId: number): void => {
-    setCategoryActive(categoryId);
-  };
 
   const handleClickChevron = (direction: string) => {
     setIsMoved(true);
@@ -41,26 +39,30 @@ export default function Categories({ categories }: ICategoriesProps) {
 
   return (
     <>
-      {isMoved && (
-        <button
-          className="absolute top-8 left-0 z-20 p-2 border bg-white border-grey_light rounded-full transtion-all duration-300 ease-in-out scale-100 shadow-none hover:scale-105 hover:shadow-md"
-          onClick={() => handleClickChevron('left')}
-        >
-          <FiChevronLeft />
-        </button>
-      )}
       <div
-        className="grow flex items-center gap-12 overflow-x-scroll scrollbar-hide"
+        className="grow flex items-center overflow-x-auto scrollbar-hide"
         ref={categoriesRef}
       >
-        {categories.map((category) => (
-          <CategoryItem
-            key={category.id}
-            category={category}
-            isActive={categoryActive === category.id ? true : false}
-            onChangeCategoryActive={onChangeCategoryActive}
-          />
-        ))}
+        <div className="grow">
+          {isMoved && (
+            <button
+              className="absolute top-8 left-0 z-20 p-2 border bg-white border-grey_light rounded-full transtion-all duration-300 ease-in-out scale-100 shadow-none hover:scale-105 hover:shadow-md"
+              onClick={() => handleClickChevron('left')}
+            >
+              <FiChevronLeft />
+            </button>
+          )}
+          <div className="flex items-center gap-12 overflow-x-scroll scrollbar-hide">
+            {categories.map((category) => (
+              <CategoryItem
+                key={category.id}
+                category={category}
+                isActive={categoryActive === category.id ? true : false}
+                onChangeCategoryActive={onChangeCategoryActive}
+              />
+            ))}
+          </div>
+        </div>
       </div>
       <button
         className="p-2 border border-grey_light rounded-full transtion-all duration-300 ease-in-out scale-100 shadow-none hover:scale-105 hover:shadow-md"
