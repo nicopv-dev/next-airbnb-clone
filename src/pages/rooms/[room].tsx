@@ -14,7 +14,7 @@ const Room: NextPage = ({ error, room }: IRoomProps) => {
   return (
     <MainLayout title="Room - Airbnb">
       {error ? (
-        <Error title="Room" />
+        <Error title="Room no encontrada" />
       ) : (
         <div className="min-h-screen py-20 px-20">
           {/* header */}
