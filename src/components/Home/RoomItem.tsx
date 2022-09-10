@@ -21,8 +21,8 @@ export default function RoomItem({ room }: IRoomItemProps) {
         <div className="overflow-hidden rounded-2xl">
           <Image
             alt={room.title}
-            src={room.image}
-            width={380}
+            src={room.images[0].image.path}
+            width={400}
             height={380}
             objectFit="cover"
             className="rounded-2xl transition-all duration-300 ease-out scale-100 hover:scale-105"
@@ -34,8 +34,10 @@ export default function RoomItem({ room }: IRoomItemProps) {
         </button>
       </div>
       <div className="mt-1">
-        <div className="flex items-center justify-between">
-          <h1 className="font-extrabold text-base">{room.title}, Chile</h1>
+        <div className="flex items-center justify-between gap-2">
+          <h1 className="font-semibold text-base line-clamp-1">
+            {room.address}
+          </h1>
           <span>4.99</span>
         </div>
         <p className="font-light text-gray-500">110 kilometros</p>

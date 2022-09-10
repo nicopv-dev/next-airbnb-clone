@@ -8,6 +8,7 @@ module.exports = {
     extend: {
       colors: {
         primary: '#65EFA8',
+        primary_dark: '#43D88B',
         white: '#fff',
         black: '#000',
         grey: '#717171',
@@ -15,5 +16,8 @@ module.exports = {
       },
     },
   },
-  plugins: [require('tailwind-scrollbar-hide')],
+  plugins: [
+    require('tailwind-scrollbar-hide'),
+    require('@tailwindcss/line-clamp'),
+  ],
 };
