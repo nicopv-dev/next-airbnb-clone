@@ -56,7 +56,7 @@ export default function Categories({
             </button>
           )}
           <div className="flex items-center gap-12 overflow-x-scroll scrollbar-hide">
-            {categories.map((category) => (
+            {categories?.map((category) => (
               <CategoryItem
                 key={category.id}
                 category={category}

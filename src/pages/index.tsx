@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
-import type { GetStaticProps } from 'next';
 import { useState } from 'react';
+import Error from '../components/Error';
 import Categories from '../components/Home/Categories';
 import Filter from '../components/Home/Filter';
 import Rooms from '../components/Home/Rooms';
@@ -26,7 +26,7 @@ const Home = ({ error, categories, rooms }: IHomeProps) => {
   return (
     <MainLayout title="Alquiler de alojamiento - Airbnb">
       {error ? (
-        <div className="text-center text-2xl text-red-500"></div>
+        <Error title="Error en el servidor" />
       ) : (
         <div className="px-4 sm:px-10 md:px-12 lg:px-20 py-8 mt-14">
           <div className="relative flex items-center justify-between gap-4 h-24">
@@ -44,7 +44,7 @@ const Home = ({ error, categories, rooms }: IHomeProps) => {
   );
 };
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps = async () => {
   const prisma = new PrismaClient();
 
   const rooms = await prisma.room.findMany({
