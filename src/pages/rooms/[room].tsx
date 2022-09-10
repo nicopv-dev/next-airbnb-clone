@@ -1,5 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next';
+import Image from 'next/image';
+import Error from '../../components/Error';
 import Room from '../../interfaces/Room';
 import MainLayout from '../../layouts/MainLayout';
 
@@ -9,18 +11,12 @@ interface IRoomProps {
 }
 
 const Room: NextPage = ({ error, room }: IRoomProps) => {
-  console.log(room);
   return (
     <MainLayout title="Room - Airbnb">
       {error ? (
-        <div className="h-screen flex flex-col items-center justify-center">
-          <h1 className="text-black font-semibold text-3xl">
-            Room no encontrada
-          </h1>
-          <p>Lo Sentimos!!</p>
-        </div>
+        <Error title="Room" />
       ) : (
-        <div className="min-h-screen pt-20 px-20">
+        <div className="min-h-screen py-20 px-20">
           {/* header */}
           <div className="py-4">
             <h1 className="text-2xl font-bold">{room?.title}</h1>
@@ -34,9 +30,12 @@ const Room: NextPage = ({ error, room }: IRoomProps) => {
                   index === 0 ? 'col-span-2 row-span-2' : 'row-span-auto'
                 }`}
               >
-                <img
+                <Image
                   alt={room?.title}
                   src={item.image.path}
+                  layout="responsive"
+                  width={'100%'}
+                  height={70}
                   className="w-full h-full object-cover rounded-lg"
                 />
               </div>
