@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { FiChevronRight, FiChevronLeft } from 'react-icons/fi';
 
 interface ICategoriesProps {
-  categories: Category[];
+  categories?: Category[];
   categoryActive: number;
   onChangeCategoryActive: (id: number) => void;
 }
@@ -15,10 +15,13 @@ interface ICategoryItemProps {
   onChangeCategoryActive: (id: number) => void;
 }
 
-export default function Categories({ categories, categoryActive, onChangeCategoryActive }: ICategoriesProps) {
+export default function Categories({
+  categories,
+  categoryActive,
+  onChangeCategoryActive,
+}: ICategoriesProps) {
   const [isMoved, setIsMoved] = useState<boolean>(false);
   const categoriesRef = useRef<HTMLDivElement>(null);
-
 
   const handleClickChevron = (direction: string) => {
     setIsMoved(true);
