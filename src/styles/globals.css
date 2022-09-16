@@ -9,3 +9,12 @@
     font-family: 'Poppins', sans-serif;
   }
 }
+
+.react-calendar {
+  border-radius: 6%;
+  overflow: hidden;
+}
+
+.react-calendar__tile--active {
+  background: #63da9d !important;
+}

@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Room from '../../interfaces/Room';
 import { FiHeart } from 'react-icons/fi';
-import NumberFormat from 'react-number-format';
+import { formatNumber } from '../../utils/methods';
 
 interface IRoomItemProps {
   room: Room;
@@ -42,19 +42,10 @@ export default function RoomItem({ room }: IRoomItemProps) {
         </div>
         <p className="font-light text-gray-500">110 kilometros</p>
         <p className="text-base font-light text-gray-500">1 - 7 oct</p>
-        <NumberFormat
-          value={room.price}
-          displayType={'text'}
-          thousandSeparator={true}
-          prefix={'$'}
-          className="font-bold mt-1"
-          renderText={(value: string) => (
-            <p>
-              {value} CLP{' '}
-              <span className="font-normal text-gray-500">/ noche</span>
-            </p>
-          )}
-        />
+        <p className="font-semibold">
+          ${formatNumber(room?.price)} CLP{' '}
+          <span className="font-normal text-gray-500">/ noche</span>
+        </p>
       </div>
     </div>
   );
