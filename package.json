@@ -15,8 +15,10 @@
     "@prisma/client": "^4.2.1",
     "@tailwindcss/line-clamp": "^0.4.2",
     "framer-motion": "^7.2.1",
+    "moment": "^2.29.4",
     "next": "12.2.5",
     "react": "18.2.0",
+    "react-calendar": "^3.8.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.4.0",
     "react-number-format": "^4.9.3",
@@ -26,6 +28,7 @@
   "devDependencies": {
     "@types/node": "18.7.3",
     "@types/react": "18.0.17",
+    "@types/react-calendar": "^3.5.2",
     "@types/react-dom": "18.0.6",
     "@typescript-eslint/eslint-plugin": "^5.33.1",
     "autoprefixer": "^10.4.8",

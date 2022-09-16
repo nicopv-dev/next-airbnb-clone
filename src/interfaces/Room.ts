@@ -1,5 +1,6 @@
 import Country from './Country';
 import ImageOnRoom from './ImageOnRoom';
+import User from './User';
 
 export default interface Room {
   id: number;
@@ -11,4 +12,5 @@ export default interface Room {
   published: boolean;
   pais: Country;
   images: ImageOnRoom[];
+  author: User;
 }

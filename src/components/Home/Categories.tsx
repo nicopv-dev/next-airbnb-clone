@@ -32,7 +32,7 @@ export default function Categories({
           ? scrollLeft - clientWidth / 3
           : scrollLeft + clientWidth / 3;
       if (direction === 'left') {
-        if (scrollLeft < 681) {
+        if (scrollLeft < 100) {
           setIsMoved(false);
         }
       }

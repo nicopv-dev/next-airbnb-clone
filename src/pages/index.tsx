@@ -48,6 +48,9 @@ export const getStaticProps = async () => {
   const prisma = new PrismaClient();
 
   const rooms = await prisma.room.findMany({
+    where: {
+      published: true,
+    },
     orderBy: {
       createdAt: 'desc',
     },
