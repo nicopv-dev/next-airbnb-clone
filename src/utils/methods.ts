@@ -1,2 +1,2 @@
 export const formatNumber = (price?: number): string =>
-  String(price).replace(/(d)(?=(d{3})+(?!d))/g, '$1.');
+  String(price).replace(/\B(?=(\d{3})+(?!\d))/g, '.');

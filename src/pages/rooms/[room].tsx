@@ -158,6 +158,7 @@ const Room: NextPage = ({ error, room }: IRoomProps) => {
                   price={room?.price}
                   initialDate={selectedInitialDate?.date}
                   endDate={selectedEndlDate?.date}
+                  maxGuests={room?.guests ? room.guests : 0}
                 />
               </div>
             </div>

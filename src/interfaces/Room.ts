@@ -13,4 +13,5 @@ export default interface Room {
   pais: Country;
   images: ImageOnRoom[];
   author: User;
+  guests: number;
 }
