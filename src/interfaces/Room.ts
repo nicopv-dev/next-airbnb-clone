@@ -1,5 +1,7 @@
 import Country from './Country';
 import ImageOnRoom from './ImageOnRoom';
+import Review from './Review';
+import Schedule from './Schedule';
 import User from './User';
 
 export default interface Room {
@@ -13,4 +15,7 @@ export default interface Room {
   pais: Country;
   images: ImageOnRoom[];
   author: User;
+  guests: number;
+  schedules: Schedule[];
+  reviews: Review[];
 }

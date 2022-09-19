@@ -19,6 +19,8 @@ model User {
   id Int @id @default(autoincrement())
   createdAt DateTime @default(now())
   email String @unique
+  image String?
+  emailVerified DateTime?
   name String?
   lastname String?
   role Role @default(USER)
@@ -26,6 +28,8 @@ model User {
   reviews Review[]
   avatar Image? @relation(fields: [imageId], references: [id])
   imageId Int?
+  accounts Account[]
+  sessions Session[]
 }
 
 model Category {
@@ -55,6 +59,7 @@ model Room {
   images ImageOnRooms[]
   schedules Schedule[]
   guests Int @default(0)
+  reviews Review[]
 }
 
 model Pais {
@@ -100,6 +105,8 @@ model Review {
   user User? @relation(fields: [userId], references: [id])
   userId Int?
   createdAt DateTime @default(now())
+  room Room? @relation(fields: [roomId], references: [id])
+  roomId Int?
 }
 
 model Schedule {
@@ -111,3 +118,41 @@ model Schedule {
   roomId Int
 }
 
+// Sessions
+model Account {
+  id                 String  @id @default(cuid())
+  userId             Int 
+  type               String
+  provider           String
+  providerAccountId  String  @map("provider_account_id")
+  refresh_token      String?
+  access_token       String?
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?
+  session_state      String?
+  oauth_token_secret String?
+  oauth_token        String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @map("session_token")
+  userId       Int 
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  id         Int      @id @default(autoincrement())
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}

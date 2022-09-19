@@ -3,4 +3,7 @@ export default interface User {
   name: string;
   lastname: string;
   email: string;
+  image?: string;
+  role: string;
+  createdAt: string;
 }
