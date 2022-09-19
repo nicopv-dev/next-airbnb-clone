@@ -79,7 +79,7 @@ export default function SelectGuests({
         onChangeQuantity={onChangeInfants}
       />
       <p className="text-xs p-4 text-center">
-        La capacidad de hyespedes maximo que tiene es de {maxGuests}
+        La capacidad de huespedes maximo que tiene es de {maxGuests} personas
       </p>
     </div>
   );

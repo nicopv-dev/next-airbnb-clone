@@ -4,8 +4,10 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Banner from '../components/Member/Banner';
 import Reviews from '../components/Member/Reviews';
+import { getSession } from 'next-auth/react';
+import { GetServerSidePropsContext } from 'next';
 
-export default function Member() {
+function Member() {
   const router = useRouter();
 
   const goTo = (path: string): void => {
@@ -103,3 +105,20 @@ export default function Member() {
     </>
   );
 }
+
+export default Member;
+
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const session = await getSession(ctx);
+
+  if (session)
+    return {
+      redirect: {
+        destination: '/',
+      },
+    };
+
+  return {
+    props: { session },
+  };
+};

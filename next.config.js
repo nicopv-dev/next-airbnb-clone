@@ -3,7 +3,12 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ['a0.muscache.com', 'res.cloudinary.com'],
+    domains: [
+      'a0.muscache.com',
+      'res.cloudinary.com',
+      'lh3.googleusercontent.com',
+      'cdn-icons-png.flaticon.com',
+    ],
   },
 };
 

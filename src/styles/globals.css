@@ -18,3 +18,10 @@
 .react-calendar__tile--active {
   background: #63da9d !important;
 }
+
+@media (max-width: 500px) {
+  .ant-picker-panels {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+}

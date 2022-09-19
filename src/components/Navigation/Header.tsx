@@ -4,6 +4,7 @@ import SearchBar from './SearchBar';
 import { motion } from 'framer-motion';
 import { FiUser } from 'react-icons/fi';
 import { useState } from 'react';
+import { useSession, signOut } from 'next-auth/react';
 
 interface INoAuthBarProps {
   onChangeDropdown: (value: boolean) => void;
@@ -13,6 +14,7 @@ interface INoAuthBarProps {
 export default function Header() {
   const [isDropdownActive, setIsDropdownActive] = useState(false);
   const router = useRouter();
+  const { data: session } = useSession();
 
   const onChangeDropdown = (active: boolean): void => {
     setIsDropdownActive(active);
@@ -46,10 +48,17 @@ export default function Header() {
       </div>
       {/* right */}
       <div className="w-full hidden lg:flex justify-end">
-        <NoAuthBar
-          onChangeDropdown={onChangeDropdown}
-          isDropdownActive={isDropdownActive}
-        />
+        {!session ? (
+          <NoAuthBar
+            onChangeDropdown={onChangeDropdown}
+            isDropdownActive={isDropdownActive}
+          />
+        ) : (
+          <AuthBar
+            onChangeDropdown={onChangeDropdown}
+            isDropdownActive={isDropdownActive}
+          />
+        )}
       </div>
     </header>
   );
@@ -120,6 +129,76 @@ function NoAuthBar({ onChangeDropdown, isDropdownActive }: INoAuthBarProps) {
             </button>
           </div>
         </motion.div>
+      </motion.div>
+    </div>
+  );
+}
+
+interface IAuthBarProps {
+  onChangeDropdown: (value: boolean) => void;
+  isDropdownActive: boolean;
+}
+
+function AuthBar({ onChangeDropdown, isDropdownActive }: IAuthBarProps) {
+  const { data: session } = useSession();
+
+  const subMenuAnimate = {
+    enter: {
+      opacity: 1,
+      y: 0,
+      display: 'block',
+    },
+    exit: {
+      y: -5,
+      opacity: 0,
+      transition: {
+        duration: 0.1,
+      },
+      transitionEnd: {
+        display: 'none',
+      },
+    },
+  };
+
+  return (
+    <div
+      onClick={() => onChangeDropdown(!isDropdownActive)}
+      className="relative"
+    >
+      <button type="button">
+        <Image
+          alt={session?.user?.name || 'logo'}
+          src={
+            session?.user?.image ||
+            'https://a0.muscache.com/im/pictures/user/09737fcc-2da2-4f66-876d-7d5b07d2317c.jpg'
+          }
+          width={40}
+          height={40}
+          objectFit="cover"
+          className="rounded-full"
+        />
+      </button>
+      <motion.div
+        className="absolute top-8 right-0 w-60 mt-2 bg-white rounded-md shadow-lg z-20 py-4"
+        initial="exit"
+        animate={isDropdownActive ? 'enter' : 'exit'}
+        variants={subMenuAnimate}
+      >
+        <div className="flex flex-col">
+          <button
+            className="py-2 px-4 hover:cursor-pointer flex justify-start bg-white transtion duration-200 hover:bg-gray-100"
+            type="button"
+          >
+            Mi perfil
+          </button>
+          <button
+            className="py-2 px-4 hover:cursor-pointer flex justify-start bg-white transtion duration-200 hover:bg-gray-100"
+            type="button"
+            onClick={() => signOut()}
+          >
+            Cerrar Session
+          </button>
+        </div>
       </motion.div>
     </div>
   );
