@@ -1,3 +1,4 @@
+import Category from './Category';
 import Country from './Country';
 import ImageOnRoom from './ImageOnRoom';
 import Review from './Review';
@@ -18,4 +19,7 @@ export default interface Room {
   guests: number;
   schedules: Schedule[];
   reviews: Review[];
+  lat: string;
+  long: string;
+  category: Category;
 }

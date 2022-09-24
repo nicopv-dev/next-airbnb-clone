@@ -46,14 +46,14 @@ export default function Host({ host }: IHostProps) {
         </ul>
 
         {/* host comunication */}
-        <div className="flex flex-col gap-2">
-          <button className="py-2 w-60 border border-black rounded-lg">
+        <div className="space-y-2">
+          <button className="py-2 px-8 p border border-black rounded-lg">
             Ponte en contacto con el anfitrion
           </button>
-          <span className="text-xs max-w-sm">
+          <p className="text-xs max-w-sm">
             Para proteger tus pagos, nunca transfieras dinero ni te comuniques
             fuera de la página o la aplicación de Airbnb.
-          </span>
+          </p>
         </div>
       </div>
     </div>

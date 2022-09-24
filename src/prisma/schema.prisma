@@ -51,6 +51,8 @@ model Room {
   address String?
   author User? @relation(fields: [authorId], references: [id])
   authorId Int?
+  lat String?
+  long String?
   category Category? @relation(fields: [categoryId], references: [id])
   categoryId Int?
   services ServiceOnRooms[]
