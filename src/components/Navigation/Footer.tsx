@@ -1,6 +1,13 @@
+import { useRouter } from 'next/router';
+
 export default function Footer() {
+  const router = useRouter();
   return (
-    <footer className="fixed bottom-0 left-0 bg-white h-12 flex items-center w-full px-20 shadow-lg border-t border-t-slate-300">
+    <footer
+      className={`${
+        router.pathname !== '/search' ? 'fixed bottom-0 left-0' : 'static'
+      } bg-white h-12 flex items-center w-full px-20 shadow-lg border-t border-t-slate-300 z-20`}
+    >
       <span className="text-sm">© 2022 Airbnb, Inc.</span>
     </footer>
   );

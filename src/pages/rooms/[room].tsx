@@ -49,7 +49,10 @@ const Room: NextPage = ({ error, room }: IRoomProps) => {
                     <h1 className="font-medium text-2xl">
                       Anfitrion: {room?.author?.name}
                     </h1>
-                    <p>2 huéspedes1 habitación1 cama1 baño</p>
+                    <p>
+                      <span>{room?.guests} huespedes, </span>
+                      <span>1 habitación, 1 cama, 1 baño</span>
+                    </p>
                   </div>
                   {/* user image */}
                   <div>
@@ -115,9 +118,14 @@ const Room: NextPage = ({ error, room }: IRoomProps) => {
 
             <Guests />
 
-            <Map />
+            <Map
+              latitude={parseFloat(room?.lat || '5.565220523826226')}
+              longitude={parseFloat(room?.long || '-77.5063874607533')}
+            />
 
-            {room && room?.reviews && <RoomReviews reviews={room?.reviews} />}
+            {room && room?.reviews.length > 0 && (
+              <RoomReviews reviews={room?.reviews} />
+            )}
 
             <Host host={room?.author} />
 

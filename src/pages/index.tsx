@@ -17,10 +17,17 @@ interface IHomeProps {
 
 const Home = ({ error, categories, rooms }: IHomeProps) => {
   const [categoryActive, setCategoryActive] = useState<number>(1);
+  const [roomsFiltered, setRoomsFiltered] = useState<Room[]>(
+    rooms?.filter((room) => room?.category?.id === 1) || []
+  );
 
   // change category active
   const onChangeCategoryActive = (categoryId: number): void => {
     setCategoryActive(categoryId);
+    const roomsFilteredByCategory = rooms?.filter(
+      (room) => room?.category?.id === categoryId
+    );
+    setRoomsFiltered(roomsFilteredByCategory || []);
   };
 
   return (
@@ -37,7 +44,7 @@ const Home = ({ error, categories, rooms }: IHomeProps) => {
             />
             <Filter />
           </div>
-          <Rooms rooms={rooms} />
+          <Rooms rooms={roomsFiltered} />
         </div>
       )}
     </MainLayout>
@@ -61,6 +68,7 @@ export const getStaticProps = async () => {
         },
       },
       pais: true,
+      category: true,
     },
   });
 
