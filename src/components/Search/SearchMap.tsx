@@ -1,7 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import ReactMapGL, { Marker, ViewState, MapRef } from 'react-map-gl';
 import { IoLocationSharp } from 'react-icons/io5';
-import 'mapbox-gl/dist/mapbox-gl.css';
 import Room from '../../interfaces/Room';
 import { useRouter } from 'next/router';
 
