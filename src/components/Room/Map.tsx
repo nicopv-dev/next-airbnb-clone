@@ -1,5 +1,4 @@
 import ReactMapGL, { Marker, ViewState, MapRef } from 'react-map-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
 import { useRef, useState } from 'react';
 import { IoLocationSharp } from 'react-icons/io5';
 
