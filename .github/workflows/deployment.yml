@@ -15,7 +15,7 @@ jobs:
 
       - name: Use Node.js 18.x
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          #DATABASE_URL: ${{ secrets.DATABASE_URL }}
           GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
           GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
           NEXT_PUBLIC_MAPBOX_API_TOKEN: ${{ secrets.NEXT_PUBLIC_MAPBOX_API_TOKEN }}
