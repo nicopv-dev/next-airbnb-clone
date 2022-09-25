@@ -7,8 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  //url      = env("DATABASE_URL")
-  url     = "postgresql://postgres:1999_nico@localhost:5432/next_airbnb_db?schema=public"
+  url      = env("DATABASE_URL")
 }
 
 enum Role {
