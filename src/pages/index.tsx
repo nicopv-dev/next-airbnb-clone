@@ -4,6 +4,7 @@ import Error from '../components/Error';
 import Categories from '../components/Home/Categories';
 import Filter from '../components/Home/Filter';
 import Rooms from '../components/Home/Rooms';
+import Modal from '../components/Modal';
 import Category from '../interfaces/Category';
 import Room from '../interfaces/Room';
 
@@ -20,6 +21,7 @@ const Home = ({ error, categories, rooms }: IHomeProps) => {
   const [roomsFiltered, setRoomsFiltered] = useState<Room[]>(
     rooms?.filter((room) => room?.category?.id === 1) || []
   );
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   // change category active
   const onChangeCategoryActive = (categoryId: number): void => {
@@ -28,6 +30,10 @@ const Home = ({ error, categories, rooms }: IHomeProps) => {
       (room) => room?.category?.id === categoryId
     );
     setRoomsFiltered(roomsFilteredByCategory || []);
+  };
+
+  const onChangeShowModal = (isOpen: boolean): void => {
+    setShowModal(isOpen);
   };
 
   return (
@@ -42,9 +48,16 @@ const Home = ({ error, categories, rooms }: IHomeProps) => {
               categoryActive={categoryActive}
               onChangeCategoryActive={onChangeCategoryActive}
             />
-            <Filter />
+            <Filter onChangeShowModal={onChangeShowModal} />
           </div>
           <Rooms rooms={roomsFiltered} />
+          <Modal
+            isOpen={showModal}
+            onChangeShowModal={onChangeShowModal}
+            title="Filtros"
+          >
+            <h1>filtros</h1>
+          </Modal>
         </div>
       )}
     </MainLayout>

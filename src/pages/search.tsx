@@ -22,7 +22,7 @@ function Search({ results, query, error, zone }: ISearchProps) {
     <MainLayout title={`Airbnb - Alojamiento en ${query?.q || ''}`}>
       <div className="py-20 pl-4">
         {!error ? (
-          <div className="flex gap-10">
+          <div className="flex gap-10 relative w-full">
             {/* results */}
             <Results results={results} />
             {/* map */}
