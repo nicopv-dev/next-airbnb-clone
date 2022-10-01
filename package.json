@@ -12,6 +12,8 @@
     "schema": "src/prisma/schema.prisma"
   },
   "dependencies": {
+    "@fullcalendar/daygrid": "^5.11.3",
+    "@fullcalendar/react": "^5.11.2",
     "@next-auth/prisma-adapter": "^1.0.4",
     "@prisma/client": "^4.2.1",
     "@tailwindcss/line-clamp": "^0.4.2",
@@ -31,6 +33,7 @@
     "tailwind-scrollbar-hide": "^1.1.7"
   },
   "devDependencies": {
+    "@tailwindcss/aspect-ratio": "^0.4.2",
     "@types/node": "18.7.3",
     "@types/react": "18.0.17",
     "@types/react-calendar": "^3.5.2",

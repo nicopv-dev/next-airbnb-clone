@@ -18,7 +18,7 @@ export default function SearchMap({ zoneLocation, rooms }: ISearchMapProps) {
   const [viewPort, setViewPort] = useState<ViewState>({
     latitude: zoneLocation.latitude,
     longitude: zoneLocation.longitude,
-    zoom: 4.5,
+    zoom: 3.2,
     bearing: 0,
     pitch: 0,
     padding: {
@@ -38,7 +38,7 @@ export default function SearchMap({ zoneLocation, rooms }: ISearchMapProps) {
   }, [router.query]);
 
   return (
-    <div className="h-full flex-[0.5_1_0%] sticky top-0 right-0 w-full">
+    <div className="h-full flex-[0.5_1_0%]">
       <ReactMapGL
         {...viewPort}
         mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_API_TOKEN}

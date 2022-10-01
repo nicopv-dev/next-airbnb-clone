@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import Languaje from '../Languaje';
 import AuthBar from './AuthBar';
+import Hamburger from './Hamburger';
 
 interface INoAuthBarProps {
   onChangeDropdown: (value: boolean) => void;
@@ -27,7 +28,7 @@ export default function Header() {
   };
 
   return (
-    <header className="fixed top-0 left-0 z-20 bg-white w-full h-16 sm:h-20 flex items-center justify-between px-4 sm:px-10 md:px-20 lg:px-24 border-b border-b-slate-200">
+    <header className="fixed top-0 left-0 z-20 bg-white w-full h-16 sm:h-20 flex items-center justify-between px-4 sm:px-10 md:px-20 lg:px-24 2xl:px-32 border-b border-b-slate-200">
       {/* left */}
       <div className="w-full h-full flex items-center">
         <div
@@ -62,6 +63,8 @@ export default function Header() {
           />
         )}
       </div>
+      {/* mobile */}
+      <Hamburger />
     </header>
   );
 }

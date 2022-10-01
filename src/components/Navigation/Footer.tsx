@@ -5,7 +5,7 @@ export default function Footer() {
   return (
     <footer
       className={`${
-        router.pathname !== '/search' ? 'fixed bottom-0 left-0' : 'static'
+        router.pathname.includes('search') ? 'static' : 'fixed bottom-0 left-0'
       } bg-white h-12 flex items-center w-full px-20 shadow-lg border-t border-t-slate-300 z-20`}
     >
       <span className="text-sm">© 2022 Airbnb, Inc.</span>
