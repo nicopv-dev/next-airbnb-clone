@@ -6,6 +6,7 @@ import Wishlist from '../../interfaces/Wishlist';
 import WishlistRoomItem from '../../components/Wishlists/WishlistRoomItem';
 import WishlistButtons from '../../components/Wishlists/WishlistButtons';
 import Error from '../../components/Error';
+import { useRouter } from 'next/router';
 
 interface IWishlistProps {
   wishlist: Wishlist;
@@ -13,6 +14,7 @@ interface IWishlistProps {
 }
 
 const Wishlist = ({ error, wishlist }: IWishlistProps) => {
+  const router = useRouter();
   return (
     <MainLayout title={`${wishlist.title} - Airbnb`}>
       {error ? (
@@ -24,7 +26,14 @@ const Wishlist = ({ error, wishlist }: IWishlistProps) => {
             {/* header */}
             <div className="space-y-2">
               {/* icons */}
-              <WishlistButtons />
+              <WishlistButtons
+                title={wishlist.title}
+                link={
+                  router.query?.wishlistId
+                    ? (router.query?.wishlistId as string)
+                    : ''
+                }
+              />
 
               {/* title */}
               <div>
@@ -42,6 +51,7 @@ const Wishlist = ({ error, wishlist }: IWishlistProps) => {
               ))}
             </div>
           </div>
+
           {/* map */}
           <div className="hidden xl:block flex-[0.45_1_0%] pt-20">map</div>
         </div>
