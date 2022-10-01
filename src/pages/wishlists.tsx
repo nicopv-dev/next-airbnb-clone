@@ -42,55 +42,72 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const prisma = new PrismaClient();
   const session = await getSession(ctx);
 
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/',
+      },
+    };
+  }
+
   const user = await prisma.user.findUnique({
     where: {
-      email: session?.user?.email,
+      email: session ? (session?.user?.email as string) : '',
     },
   });
 
-  const wishlists = await prisma.wishlist.findMany({
-    where: {
-      userId: user.id,
-    },
-    orderBy: {
-      createdAt: 'asc',
-    },
-    include: {
-      roomOnWishlist: {
-        select: {
-          room: {
-            include: {
-              images: {
-                select: {
-                  image: true,
+  if (!user) {
+    return {
+      props: {
+        error: true,
+        wishlist: [],
+      },
+    };
+  } else {
+    const wishlists = await prisma.wishlist.findMany({
+      where: {
+        userId: user ? (user?.id as number) : 0,
+      },
+      orderBy: {
+        createdAt: 'asc',
+      },
+      include: {
+        roomOnWishlist: {
+          select: {
+            room: {
+              include: {
+                images: {
+                  select: {
+                    image: true,
+                  },
                 },
               },
             },
           },
         },
       },
-    },
-  });
+    });
 
-  const results = wishlists.map((whishlist) => {
-    const rooms = whishlist.roomOnWishlist.map((item) => item.room);
-    delete whishlist.roomOnWishlist;
-    // rooms = rooms?.map((room) => {
-    //   const images = room.images.map((img) => img.image);
-    //   return {
-    //     ...room,
-    //     images,
-    //   };
-    // });
-    return { ...whishlist, rooms };
-  });
+    const results = wishlists.map((whishlist) => {
+      const { roomOnWishlist, ...others } = whishlist;
+      const rooms = roomOnWishlist?.map((item) => item.room);
+      // rooms = rooms?.map((room) => {
+      //   const images = room.images.map((img) => img.image);
+      //   return {
+      //     ...room,
+      //     images,
+      //   };
+      // });
+      return { ...others, rooms };
+    });
 
-  return {
-    props: {
-      error: false,
-      wishlists: JSON.parse(JSON.stringify(results)),
-    },
-  };
+    return {
+      props: {
+        error: false,
+        wishlists: JSON.parse(JSON.stringify(results)),
+      },
+    };
+  }
 };
 
 export default Wishlists;

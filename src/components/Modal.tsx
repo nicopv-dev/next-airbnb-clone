@@ -4,7 +4,7 @@ import { FiX } from 'react-icons/fi';
 interface IModalProps {
   isOpen: boolean;
   onChangeShowModal: (isOpen: boolean) => void;
-  size: 'max-w-sm' | 'max-w-md' | 'max-w-lg' | 'max-w-3xl';
+  size?: 'max-w-sm' | 'max-w-md' | 'max-w-lg' | 'max-w-3xl';
   title: string;
   children: JSX.Element;
 }
@@ -25,30 +25,30 @@ export default function Modal({
     hidden: {
       y: '0',
       opacity: 0,
-      transition: { delay: 0.5 },
+      transition: { delay: 0.5, ease: 'easeOut', duration: 0.5 },
     },
     visible: {
       y: '0',
       opacity: 1,
-      transition: { delay: 0.5 },
+      transition: { delay: 0.5, ease: 'easeOut', duration: 0.6 },
     },
   };
 
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       {isOpen && (
         <motion.div
           variants={backDrop}
           initial="hidden"
-          animate="visible"
-          className="fixed top-0 left-0 w-full h-screen bg-black bg-opacity-50 z-30 grid place-items-center"
+          animate={isOpen ? 'visible' : 'hidden'}
+          className="fixed top-0 left-0 w-full h-screen bg-black bg-opacity-20 z-30 grid place-items-center"
         >
           <motion.div
             variants={modal}
-            className={`bg-white shadow-lg rounded-lg p-4 mx-auto ${size} w-full`}
+            className={`bg-white shadow-lg rounded-lg mx-auto ${size} w-full`}
           >
             {/* title */}
-            <div className="flex items-center justify-between p-2">
+            <div className="flex items-center justify-between p-4 border-b border-b-gray-200">
               <p className="w-6" />
               <h2 className="text-xl font-medium">{title}</h2>
               <button type="button" onClick={() => onChangeShowModal(false)}>
@@ -56,7 +56,7 @@ export default function Modal({
               </button>
             </div>
             {/* content */}
-            <div className="p-2">{children}</div>
+            {children}
           </motion.div>
         </motion.div>
       )}

@@ -9,9 +9,10 @@ interface IMyWishlistsProps {
 export default function MyWishlists({ wishlists }: IMyWishlistsProps) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      {wishlists.map((wishlist) => (
-        <WishlistItem key={wishlist.id} wishlist={wishlist} />
-      ))}
+      {wishlists &&
+        wishlists.map((wishlist) => (
+          <WishlistItem key={wishlist.id} wishlist={wishlist} />
+        ))}
     </div>
   );
 }

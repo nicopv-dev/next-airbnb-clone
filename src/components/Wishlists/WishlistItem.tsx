@@ -11,7 +11,7 @@ export default function WishlistItem({ wishlist }: IWishlistItemProps) {
   const router = useRouter();
 
   const goTo = (): void => {
-    router.push(`/whislists/${wishlist.id}`);
+    router.push(`/whislists/${wishlist?.id || ''}`);
   };
 
   return (
@@ -21,9 +21,9 @@ export default function WishlistItem({ wishlist }: IWishlistItemProps) {
     >
       {/* image */}
       <div className="grid sm:grid-rows-2 sm:grid-cols-1 md:grid-rows-1 md:grid-cols-3 gap-[2px]">
-        {wishlist.rooms.map((room, index) => (
+        {wishlist?.rooms?.map((room, index) => (
           <div
-            key={room.id}
+            key={room?.id}
             className={`${
               index === 0
                 ? 'col-span-1 row-span-1 sm:col-span-2 sm:row-span-2'
@@ -31,8 +31,8 @@ export default function WishlistItem({ wishlist }: IWishlistItemProps) {
             }`}
           >
             <Image
-              alt={room.title}
-              src={room.images[0].image.path}
+              alt={room?.title}
+              src={room?.images[0].image.path}
               width={300}
               height={200}
               objectFit="cover"
@@ -44,7 +44,7 @@ export default function WishlistItem({ wishlist }: IWishlistItemProps) {
       </div>
       {/* title */}
       <div>
-        <h2 className="text-xl font-semibold">{wishlist.title}</h2>
+        <h2 className="text-xl font-semibold">{wishlist?.title}</h2>
       </div>
     </div>
   );

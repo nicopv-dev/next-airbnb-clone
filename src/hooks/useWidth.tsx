@@ -13,7 +13,7 @@ export default function useWidth(): number {
     handleResize();
 
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  }, [width]);
 
   return width;
 }

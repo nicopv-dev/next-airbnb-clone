@@ -1,12 +1,20 @@
+import { useState } from 'react';
 import { FiHeart, FiShare } from 'react-icons/fi';
 import { IoStar } from 'react-icons/io5';
 import Room from '../../interfaces/Room';
+import Modal from '../Modal';
 
 interface IHomeHeaderProps {
   room?: Room;
 }
 
 export default function HomeHeader({ room }: IHomeHeaderProps) {
+  const [showModal, setShowModal] = useState<boolean>(false);
+
+  const onChangeShowModal = (value: boolean): void => {
+    setShowModal(value);
+  };
+
   return (
     <div className="py-8">
       <h1 className="text-2xl font-semibold">{room?.title}</h1>
@@ -21,7 +29,10 @@ export default function HomeHeader({ room }: IHomeHeaderProps) {
         </div>
 
         <div className="flex items-center gap-4">
-          <button className="flex items-center gap-1 text-sm">
+          <button
+            className="flex items-center gap-1 text-sm"
+            onClick={() => onChangeShowModal(true)}
+          >
             <FiShare className="h-4 w-4" />
             Compartir
           </button>
@@ -30,6 +41,14 @@ export default function HomeHeader({ room }: IHomeHeaderProps) {
             Guardar
           </button>
         </div>
+
+        <Modal
+          isOpen={showModal}
+          onChangeShowModal={onChangeShowModal}
+          title="Compartir"
+        >
+          <div>compartir</div>
+        </Modal>
       </div>
     </div>
   );

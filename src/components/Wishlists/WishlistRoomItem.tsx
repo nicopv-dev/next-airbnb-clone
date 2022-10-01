@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import React from 'react';
+import useWidth from '../../hooks/useWidth';
 import Room from '../../interfaces/Room';
 import { formatNumber } from '../../utils/methods';
 import Like from '../Like';
@@ -9,6 +10,7 @@ interface IWishlistRoomItemProps {
 }
 
 export default function WishlistRoomItem({ room }: IWishlistRoomItemProps) {
+  const width = useWidth();
   const goTo = (): void => {
     if (room) {
       window.open(`/rooms/${room.id}`, '_blank');
@@ -16,17 +18,20 @@ export default function WishlistRoomItem({ room }: IWishlistRoomItemProps) {
   };
 
   return (
-    <div className="py-6 flex gap-6 hover:cursor-pointer" onClick={goTo}>
+    <div
+      className="py-6 flex flex-col md:flex-row gap-6 hover:cursor-pointer"
+      onClick={goTo}
+    >
       {/* image */}
       <div>
         <Image
           alt={room.title}
           src={room.images[0].image.path}
-          width={280}
+          width={width > 768 ? 280 : 500}
           height={200}
           objectFit="cover"
-          layout="fixed"
-          className="object-cover rounded-xl"
+          layout={width > 768 ? 'fixed' : 'responsive'}
+          className="w-full object-cover rounded-xl"
         />
       </div>
       {/* title */}

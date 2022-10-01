@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next';
+import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import React from 'react';
 import MainLayout from '../../layouts/MainLayout';
 import Wishlist from '../../interfaces/Wishlist';
@@ -12,26 +12,29 @@ interface IWishlistProps {
   error: boolean;
 }
 
-const Wishlist: NextPage = ({ error, wishlist }: IWishlistProps) => {
+const Wishlist = ({ error, wishlist }: IWishlistProps) => {
   return (
     <MainLayout title={`${wishlist.title} - Airbnb`}>
       {error ? (
-        <Error />
+        <Error title="Error al buscar lista" />
       ) : (
         <div className="flex gap-4">
           {/* list */}
-          <div className="flex-[0.55_1_0%] py-20 px-4 sm:px-10 md:px-20 lg:px-24 2xl:px-32 ">
+          <div className="flex-1 xl:flex-[0.55_1_0%] py-20 px-4 sm:px-10 md:px-20 lg:px-24 2xl:px-32 ">
             {/* header */}
             <div className="space-y-2">
               {/* icons */}
               <WishlistButtons />
+
               {/* title */}
               <div>
                 <h3 className="text-4xl font-bold">{wishlist.title}</h3>
               </div>
+
               {/* categories */}
               <div>categories</div>
             </div>
+
             {/* items */}
             <div className="flex flex-col divide-y">
               {wishlist.rooms.map((room) => (
@@ -40,7 +43,7 @@ const Wishlist: NextPage = ({ error, wishlist }: IWishlistProps) => {
             </div>
           </div>
           {/* map */}
-          <div className="flex-[0.45_1_0%] pt-20">map</div>
+          <div className="hidden xl:block flex-[0.45_1_0%] pt-20">map</div>
         </div>
       )}
     </MainLayout>
@@ -52,10 +55,11 @@ export const getServerSideProps: GetServerSideProps = async (
 ) => {
   const { wishlistId } = ctx.query;
   const prisma = new PrismaClient();
+  const id: string = wishlistId ? (wishlistId as string) : '';
 
   const whislist = await prisma.wishlist.findUnique({
     where: {
-      id: wishlistId,
+      id,
     },
     include: {
       roomOnWishlist: {
@@ -76,7 +80,7 @@ export const getServerSideProps: GetServerSideProps = async (
 
   const result = {
     ...whislist,
-    rooms: whislist.roomOnWishlist.map((room) => room.room),
+    rooms: whislist?.roomOnWishlist.map((room) => room.room),
   };
 
   delete result.roomOnWishlist;
