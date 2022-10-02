@@ -2,6 +2,7 @@ import Category from '../../interfaces/Category';
 import { useState, useRef } from 'react';
 import Image from 'next/image';
 import { FiChevronRight, FiChevronLeft } from 'react-icons/fi';
+import { useRouter } from 'next/router';
 
 interface ICategoriesProps {
   categories?: Category[];
@@ -49,7 +50,7 @@ export default function Categories({
         <div className="grow">
           {isMoved && (
             <button
-              className="absolute top-8 left-0 z-20 p-2 border bg-white border-grey_light rounded-full transtion-all duration-300 ease-in-out scale-100 shadow-none hover:scale-105 hover:shadow-md"
+              className="absolute top-8 left-0 z-10 p-2 border bg-white border-grey_light rounded-full transtion-all duration-300 ease-in-out scale-100 shadow-none hover:scale-105 hover:shadow-md"
               onClick={() => handleClickChevron('left')}
             >
               <FiChevronLeft />
@@ -82,8 +83,11 @@ function CategoryItem({
   isActive,
   onChangeCategoryActive,
 }: ICategoryItemProps) {
+  const router = useRouter();
+
   const selectCategory = (): void => {
     onChangeCategoryActive(category.id);
+    router.push(`/?category=${category.id}`);
   };
 
   return (
