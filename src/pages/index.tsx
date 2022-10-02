@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../lib/prisma';
 import { GetServerSidePropsContext } from 'next';
 import Error from '../components/Error';
 import Categories from '../components/Home/Categories';
@@ -59,7 +59,6 @@ const Home = ({ error, categories, rooms }: IHomeProps) => {
 };
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const prisma = new PrismaClient();
   const { query } = ctx;
   const categoryId: string = query?.category
     ? (query?.category as string)

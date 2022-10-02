@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '../../lib/prisma';
 import { GetServerSidePropsContext } from 'next';
 import React from 'react';
 import MainLayout from '../../layouts/MainLayout';
@@ -73,7 +73,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   }
 
   const { wishlistId } = ctx.query;
-  const prisma = new PrismaClient();
   const id: string = wishlistId ? (wishlistId as string) : '';
 
   const whislist = await prisma.wishlist.findUnique({

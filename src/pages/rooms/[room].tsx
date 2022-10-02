@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '../../lib/prisma';
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next';
 import Image from 'next/image';
 import Error from '../../components/Error';
@@ -141,7 +141,6 @@ export const getServerSideProps: GetServerSideProps = async (
   ctx: GetServerSidePropsContext
 ) => {
   const { room: id } = ctx.query;
-  const prisma = new PrismaClient();
 
   const result = await prisma.room.findUnique({
     where: {

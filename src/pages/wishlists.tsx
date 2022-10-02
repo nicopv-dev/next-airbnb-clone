@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '../lib/prisma';
 import { GetServerSidePropsContext } from 'next';
 import { getSession } from 'next-auth/react';
 import React from 'react';
@@ -39,7 +39,6 @@ function Wishlists({ wishlists, error }: IWhislistsProps) {
 }
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const prisma = new PrismaClient();
   const session = await getSession(ctx);
 
   if (!session) {
