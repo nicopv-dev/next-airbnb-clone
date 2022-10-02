@@ -7,7 +7,7 @@ import Languaje from '../Languaje';
 const LINKS: { id: number; link: string; text: string }[] = [
   { id: 1, link: '/profile', text: 'Mi perfil' },
   { id: 2, link: '/notifications', text: 'Notificaciones' },
-  { id: 3, link: '/travels', text: 'Viajes' },
+  { id: 3, link: '/trips', text: 'Viajes' },
   { id: 4, link: '/wishlists', text: 'Favoritos' },
 ];
 

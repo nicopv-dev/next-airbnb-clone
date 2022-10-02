@@ -2,7 +2,9 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Room from '../../interfaces/Room';
 import { FiHeart } from 'react-icons/fi';
-import { formatNumber } from '../../utils/methods';
+import { IoStar } from 'react-icons/io5';
+import { formatNumber, getDistance } from '../../utils/methods';
+import useGeoLocation from '../../hooks/useGeoLocation';
 
 interface IRoomItemProps {
   room: Room;
@@ -10,6 +12,7 @@ interface IRoomItemProps {
 
 export default function RoomItem({ room }: IRoomItemProps) {
   const router = useRouter();
+  const myLocation = useGeoLocation();
 
   const goTo = (): void => {
     router.push(`/rooms/${room.id}`);
@@ -39,9 +42,20 @@ export default function RoomItem({ room }: IRoomItemProps) {
           <h1 className="font-semibold text-base line-clamp-1">
             {room.address}
           </h1>
-          <span>4.99</span>
+          <span className="flex items-center gap-1">
+            <IoStar className="w-3 h-3" />
+            4.99
+          </span>
         </div>
-        <p className="font-light text-gray-500">110 kilometros</p>
+        {room.lat && room.long && myLocation && (
+          <p className="font-light text-gray-500">
+            {getDistance(myLocation, {
+              latitude: parseInt(room?.lat) || -34.603684,
+              longitude: parseInt(room?.long) || 3.3253252,
+            })}{' '}
+            Kilometros
+          </p>
+        )}
         <p className="text-base font-light text-gray-500">1 - 7 oct</p>
         <p className="font-semibold">
           ${formatNumber(room?.price)} CLP{' '}

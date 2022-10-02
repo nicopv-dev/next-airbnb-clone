@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { GetServerSideProps, GetServerSidePropsContext } from 'next';
+import { GetServerSidePropsContext } from 'next';
 import React from 'react';
 import MainLayout from '../../layouts/MainLayout';
 import Wishlist from '../../interfaces/Wishlist';
@@ -7,6 +7,7 @@ import WishlistRoomItem from '../../components/Wishlists/WishlistRoomItem';
 import WishlistButtons from '../../components/Wishlists/WishlistButtons';
 import Error from '../../components/Error';
 import { useRouter } from 'next/router';
+import { getSession } from 'next-auth/react';
 
 interface IWishlistProps {
   wishlist: Wishlist;
@@ -60,9 +61,17 @@ const Wishlist = ({ error, wishlist }: IWishlistProps) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (
-  ctx: GetServerSidePropsContext
-) => {
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const session = await getSession(ctx);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/',
+      },
+    };
+  }
+
   const { wishlistId } = ctx.query;
   const prisma = new PrismaClient();
   const id: string = wishlistId ? (wishlistId as string) : '';
@@ -88,12 +97,18 @@ export const getServerSideProps: GetServerSideProps = async (
     },
   });
 
+  if (!whislist) {
+    return {
+      props: {
+        error: true,
+      },
+    };
+  }
+
   const result = {
     ...whislist,
     rooms: whislist?.roomOnWishlist.map((room) => room.room),
   };
-
-  delete result.roomOnWishlist;
 
   return {
     props: {

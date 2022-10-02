@@ -1,5 +1,6 @@
-import { PrismaClient } from '@prisma/client';
 import { useState } from 'react';
+import { PrismaClient } from '@prisma/client';
+import { GetServerSidePropsContext } from 'next';
 import Error from '../components/Error';
 import Categories from '../components/Home/Categories';
 import Filter from '../components/Home/Filter';
@@ -18,18 +19,11 @@ interface IHomeProps {
 
 const Home = ({ error, categories, rooms }: IHomeProps) => {
   const [categoryActive, setCategoryActive] = useState<number>(1);
-  const [roomsFiltered, setRoomsFiltered] = useState<Room[]>(
-    rooms?.filter((room) => room?.category?.id === 1) || []
-  );
   const [showModal, setShowModal] = useState<boolean>(false);
 
   // change category active
   const onChangeCategoryActive = (categoryId: number): void => {
     setCategoryActive(categoryId);
-    const roomsFilteredByCategory = rooms?.filter(
-      (room) => room?.category?.id === categoryId
-    );
-    setRoomsFiltered(roomsFilteredByCategory || []);
   };
 
   const onChangeShowModal = (isOpen: boolean): void => {
@@ -50,7 +44,7 @@ const Home = ({ error, categories, rooms }: IHomeProps) => {
             />
             <Filter onChangeShowModal={onChangeShowModal} />
           </div>
-          <Rooms rooms={roomsFiltered} />
+          <Rooms rooms={rooms} />
           <Modal
             isOpen={showModal}
             onChangeShowModal={onChangeShowModal}
@@ -64,12 +58,17 @@ const Home = ({ error, categories, rooms }: IHomeProps) => {
   );
 };
 
-export const getStaticProps = async () => {
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const prisma = new PrismaClient();
+  const { query } = ctx;
+  const categoryId: string = query?.category
+    ? (query?.category as string)
+    : '1';
 
   const rooms = await prisma.room.findMany({
     where: {
       published: true,
+      categoryId: Number(categoryId),
     },
     orderBy: {
       createdAt: 'desc',

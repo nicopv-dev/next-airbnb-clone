@@ -1,0 +1,56 @@
+name: Deployment workflow
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    name: Deploy next-airbnb-clone to EC2 on master branch push
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: next_airbnb_db
+          POSTGRES_PASSWORD: 1999_nico
+          POSTGRES_USER: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: 'postgresql://postgres:1999_nico@localhost:5432/next_airbnb_db?schema=public'
+      GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+      GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+      NEXT_PUBLIC_MAPBOX_API_TOKEN: ${{ secrets.NEXT_PUBLIC_MAPBOX_API_TOKEN }}
+      NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Use Node.js 18.x
+        uses: actions/checkout@v2
+        with:
+          node-version: 18.x
+
+      - run: npm ci
+      - run: npm install
+      - run: npm run build
+
+      - name: Deploy to EC2
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          ARGS: '-rltgoDzvO --delete'
+          SOURCE: '.next/'
+          REMOTE_HOST: ${{ secrets.HOST }}
+          REMOTE_USER: ${{ secrets.USER }}
+          TARGET: ${{ secrets.TARGET_DIR }}
