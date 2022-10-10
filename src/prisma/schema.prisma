@@ -31,6 +31,7 @@ model User {
   accounts Account[]
   sessions Session[]
   wishlists Wishlist[]
+  likes Like[]
 }
 
 model Category {
@@ -64,6 +65,7 @@ model Room {
   guests Int @default(0)
   reviews Review[]
   roomOnWishlist RoomOnWishlist[]
+  likes Like[]
 }
 
 model Pais {
@@ -177,4 +179,12 @@ model RoomOnWishlist {
   wishlistId String
 
   @@id([roomId, wishlistId])
+}
+
+model Like {
+  id Int @id @default(autoincrement())
+  room Room @relation(fields: [roomId], references: [id])
+  roomId Int
+  user User @relation(fields: [userId], references: [id])
+  userId Int
 }

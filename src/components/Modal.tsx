@@ -4,9 +4,16 @@ import { FiX } from 'react-icons/fi';
 interface IModalProps {
   isOpen: boolean;
   onChangeShowModal: (isOpen: boolean) => void;
-  size?: 'max-w-sm' | 'max-w-md' | 'max-w-lg' | 'max-w-3xl';
+  size?:
+    | 'max-w-sm'
+    | 'max-w-md'
+    | 'max-w-lg'
+    | 'max-w-xl'
+    | 'max-w-2xl'
+    | 'max-w-3xl'
+    | 'max-w-4xl';
   title: string;
-  children: JSX.Element;
+  children?: JSX.Element;
 }
 
 export default function Modal({
@@ -45,12 +52,12 @@ export default function Modal({
         >
           <motion.div
             variants={modal}
-            className={`bg-white shadow-lg rounded-lg mx-auto ${size} w-full`}
+            className={`bg-white shadow-lg rounded-lg mx-auto w-full ${size} max-h-[80vh] overflow-y-auto`}
           >
             {/* title */}
-            <div className="flex items-center justify-between p-4 border-b border-b-gray-200">
-              <p className="w-6" />
-              <h2 className="text-xl font-medium">{title}</h2>
+            <div className="flex items-center justify-between p-4 gap-4 border-b border-b-gray-200">
+              <p className="w-6"></p>
+              <h2 className="text-2xl font-semibold">{title}</h2>
               <button type="button" onClick={() => onChangeShowModal(false)}>
                 <FiX className="w-6 h-6 text-black" />
               </button>
