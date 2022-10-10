@@ -8,7 +8,8 @@ const LINKS: { id: number; link: string; text: string }[] = [
   { id: 1, link: '/profile', text: 'Mi perfil' },
   { id: 2, link: '/notifications', text: 'Notificaciones' },
   { id: 3, link: '/trips', text: 'Viajes' },
-  { id: 4, link: '/wishlists', text: 'Favoritos' },
+  { id: 4, link: '/wishlists', text: 'Lista de Favoritos' },
+  { id: 5, link: '/likes', text: 'Me Gusta' },
 ];
 
 interface IAuthBarProps {
@@ -43,11 +44,11 @@ export default function AuthBar({
   return (
     <div className="flex items-center gap-3">
       <Languaje />
-      <div
-        onClick={() => onChangeDropdown(!isDropdownActive)}
-        className="relative "
-      >
-        <button type="button">
+      <div className="relative ">
+        <button
+          type="button"
+          onClick={() => onChangeDropdown(!isDropdownActive)}
+        >
           <Image
             alt={session?.user?.name || 'logo'}
             src={
@@ -60,11 +61,13 @@ export default function AuthBar({
             className="rounded-full"
           />
         </button>
+
         <motion.div
           className="absolute top-8 right-0 w-60 mt-2 bg-white rounded-md shadow-lg z-20 py-4"
           initial="exit"
           animate={isDropdownActive ? 'enter' : 'exit'}
           variants={subMenuAnimate}
+          onMouseLeave={() => onChangeDropdown(false)}
         >
           <div className="flex flex-col gap-2 divide-y">
             {/* items */}

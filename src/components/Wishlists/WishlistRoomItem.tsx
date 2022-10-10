@@ -2,14 +2,19 @@ import Image from 'next/image';
 import React from 'react';
 import useWidth from '../../hooks/useWidth';
 import Room from '../../interfaces/Room';
+import Zone from '../../interfaces/Zone';
 import { formatNumber } from '../../utils/methods';
 import Like from '../Like';
 
 interface IWishlistRoomItemProps {
   room: Room;
+  onChangeRoomZone: (newZone: Zone) => void;
 }
 
-export default function WishlistRoomItem({ room }: IWishlistRoomItemProps) {
+export default function WishlistRoomItem({
+  room,
+  onChangeRoomZone,
+}: IWishlistRoomItemProps) {
   const width = useWidth();
   const goTo = (): void => {
     if (room) {
@@ -21,6 +26,12 @@ export default function WishlistRoomItem({ room }: IWishlistRoomItemProps) {
     <div
       className="py-6 flex flex-col md:flex-row gap-6 hover:cursor-pointer"
       onClick={goTo}
+      onMouseEnter={() =>
+        onChangeRoomZone({
+          latitude: parseInt(room.lat),
+          longitude: parseInt(room.long),
+        })
+      }
     >
       {/* image */}
       <div>
@@ -34,7 +45,7 @@ export default function WishlistRoomItem({ room }: IWishlistRoomItemProps) {
           className="w-full object-cover rounded-xl"
         />
       </div>
-      {/* title */}
+      {/* info */}
       <div className="relative flex-grow flex flex-col justify-between">
         <section>
           <div className="flex justify-between items-center">

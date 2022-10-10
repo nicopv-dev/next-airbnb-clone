@@ -22,4 +22,5 @@ export default interface Room {
   lat: string;
   long: string;
   category: Category;
+  isLike: boolean;
 }

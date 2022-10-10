@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Room from '../../interfaces/Room';
 import { FiHeart } from 'react-icons/fi';
-import { IoStar } from 'react-icons/io5';
+import { IoStar, IoHeartSharp } from 'react-icons/io5';
 import { formatNumber, getDistance } from '../../utils/methods';
 import useGeoLocation from '../../hooks/useGeoLocation';
 
@@ -33,7 +33,11 @@ export default function RoomItem({ room }: IRoomItemProps) {
           quality={100}
         />
         <button className="absolute top-4 right-4">
-          <FiHeart className="text-white h-5 w-5" />
+          {room.isLike ? (
+            <IoHeartSharp className="text-red-500 h-5 w-5" />
+          ) : (
+            <FiHeart className="text-white h-5 w-5" />
+          )}
         </button>
       </div>
       {/* info */}

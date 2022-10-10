@@ -3,6 +3,7 @@ import { FiHeart, FiShare } from 'react-icons/fi';
 import { IoStar } from 'react-icons/io5';
 import Room from '../../interfaces/Room';
 import Modal from '../Modal';
+import RoomShare from './RoomShare';
 
 interface IHomeHeaderProps {
   room?: Room;
@@ -10,6 +11,12 @@ interface IHomeHeaderProps {
 
 export default function HomeHeader({ room }: IHomeHeaderProps) {
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [modalContent, setModalContent] = useState<JSX.Element>(<div />);
+
+  const openModal = () => {
+    setShowModal(true);
+    setModalContent(<RoomShare room={room} />);
+  };
 
   const onChangeShowModal = (value: boolean): void => {
     setShowModal(value);
@@ -19,19 +26,21 @@ export default function HomeHeader({ room }: IHomeHeaderProps) {
     <div className="py-8">
       <h1 className="text-2xl font-semibold">{room?.title}</h1>
       <div className="flex justify-between flex-col items-start md:flex-row md:items-center space-y-2 md:space-y-0">
-        <div className="flex gap-4">
+        <div className="flex gap-x-4 gap-y-1 sm:gap-y-0 flex-wrap">
           <div className="flex gap-1">
             <IoStar />
             <p className="text-sm">4.87</p>
           </div>
           <span className="text-sm">389 reseñas</span>
-          <p className="text-sm underline">{room?.address}</p>
+          <p className="text-sm underline">
+            {room?.address}, {room?.pais.title}
+          </p>
         </div>
 
         <div className="flex items-center gap-4">
           <button
             className="flex items-center gap-1 text-sm"
-            onClick={() => onChangeShowModal(true)}
+            onClick={openModal}
           >
             <FiShare className="h-4 w-4" />
             Compartir
@@ -45,9 +54,10 @@ export default function HomeHeader({ room }: IHomeHeaderProps) {
         <Modal
           isOpen={showModal}
           onChangeShowModal={onChangeShowModal}
-          title="Compartir"
+          title="Comparte este alojamiento con amigos y familiares"
+          size="max-w-xl"
         >
-          <div>compartir</div>
+          {modalContent}
         </Modal>
       </div>
     </div>
