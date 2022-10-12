@@ -1,0 +1,44 @@
+name: Build next-airbnb-clone web application
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    name: Build project
+    runs-on: ubuntu-latest
+
+    env:
+      DATABASE_URL: 'postgresql://postgres:1999_nico@localhost:5432/next_airbnb_db?schema=public'
+      CLOUDINARY_API_KEY: 594814315685118
+      CLOUDINARY_API_SECRET: gSQj9TmC304bMBrDFjL6nZRvWAc
+      GOOGLE_CLIENT_ID: 996927739064-rl86aao92gm3rg79g884avvcurq8tklq.apps.googleusercontent.com
+      GOOGLE_CLIENT_SECRET: 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
+      NEXT_PUBLIC_MAPBOX_API_TOKEN: pk.eyJ1Ijoibmljb3B2IiwiYSI6ImNsNTQ5bzIxejA3NXEzZHFvMnp3MG4wYzcifQ.foDFiJS4oIabheWcyJiTOw
+      NEXTAUTH_URL: http://localhost:3000/api/auth
+      JWT_SECRET: bee08e9e86bf49556d303d9b10e301d5
+
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: next_airbnb_db
+          POSTGRES_PASSWORD: 1999_nico
+          POSTGRES_USER: postgres
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Install Dependencies
+        run: npm install
+      - name: Build Project Assets
+        run: npm run build
