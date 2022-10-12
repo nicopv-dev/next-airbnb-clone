@@ -2,7 +2,8 @@ name: Build next-airbnb-clone web application
 
 on:
   push:
-    branches: [main]
+    branches:
+      - master
 
 jobs:
   build:
