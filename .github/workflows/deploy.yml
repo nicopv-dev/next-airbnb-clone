@@ -34,6 +34,10 @@ jobs:
           --health-timeout 5s
           --health-retries 5
 
+    strategy:
+      matrix:
+        node-version: [16.x]
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -61,4 +65,4 @@ jobs:
           remote_path: /home/ubuntu/projects/next-airbnb-clone
           remote_host: 18.205.157.100
           remote_user: ubuntu
-          remote_key: ${{ secrets.AWS_PRIVATE_KEY }}
+          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
