@@ -50,7 +50,7 @@ export const getServerSideProps: GetServerSideProps = async (
   ctx: GetServerSidePropsContext
 ) => {
   const { query } = ctx;
-  const results = await fetch(`http://localhost:3000/api/search/${query?.q}`);
+  const results = await fetch(`${process.env.HOST_URL}/api/search/${query?.q}`);
   const data = await results.json();
   const zone = await fetch(mapboxRequests.fetchCountry(query?.q || '')).then(
     (res) => res.json()
