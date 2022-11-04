@@ -1,15 +1,16 @@
 import { useState } from 'react';
-import { FiHeart, FiShare } from 'react-icons/fi';
-import { IoStar } from 'react-icons/io5';
+import { FiHeart, FiShare, FiPlus } from 'react-icons/fi';
+import { IoStar, IoHeart } from 'react-icons/io5';
 import Room from '../../interfaces/Room';
 import Modal from '../Modal';
 import RoomShare from './RoomShare';
 
 interface IHomeHeaderProps {
   room?: Room;
+  isLike: boolean;
 }
 
-export default function HomeHeader({ room }: IHomeHeaderProps) {
+export default function HomeHeader({ room, isLike }: IHomeHeaderProps) {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [modalContent, setModalContent] = useState<JSX.Element>(<div />);
 
@@ -46,8 +47,16 @@ export default function HomeHeader({ room }: IHomeHeaderProps) {
             Compartir
           </button>
           <button className="flex items-center gap-1 text-sm">
-            <FiHeart className="h-4 w-4" />
-            Guardar
+            {isLike ? (
+              <IoHeart className="h-4 w-4 text-red-500" />
+            ) : (
+              <FiHeart className="h-4 w-4" />
+            )}
+            Me Gusta
+          </button>
+          <button className="flex items-center gap-1 text-sm">
+            <FiPlus className="h-4 w-4" />
+            Agregar
           </button>
         </div>
 

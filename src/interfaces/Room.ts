@@ -23,4 +23,5 @@ export default interface Room {
   long: string;
   category: Category;
   isLike: boolean;
+  likeId: number;
 }

@@ -18,8 +18,8 @@ interface IWishlistProps {
 const Wishlist = ({ error, wishlist }: IWishlistProps) => {
   const [titleState, setTitleState] = useState<string>(wishlist.title);
   const [roomZone, setRoomZone] = useState<Zone>({
-    latitude: parseInt(wishlist.rooms[0].lat),
-    longitude: parseInt(wishlist.rooms[0].long),
+    latitude: parseInt(wishlist.rooms[0]?.lat || '0'),
+    longitude: parseInt(wishlist.rooms[0]?.long || '0'),
   });
 
   const onChangeTitle = (value: string): void => {

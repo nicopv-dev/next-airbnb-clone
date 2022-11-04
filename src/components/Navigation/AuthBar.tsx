@@ -44,7 +44,7 @@ export default function AuthBar({
   return (
     <div className="flex items-center gap-3">
       <Languaje />
-      <div className="relative ">
+      <div className="relative">
         <button
           type="button"
           onClick={() => onChangeDropdown(!isDropdownActive)}
@@ -61,9 +61,8 @@ export default function AuthBar({
             className="rounded-full"
           />
         </button>
-
         <motion.div
-          className="absolute top-8 right-0 w-60 mt-2 bg-white rounded-md shadow-lg z-20 py-4"
+          className="absolute top-8 right-0 w-60 mt-2 bg-white rounded-md shadow-lg z-40 py-4"
           initial="exit"
           animate={isDropdownActive ? 'enter' : 'exit'}
           variants={subMenuAnimate}

@@ -38,7 +38,7 @@ export default function SearchMap({ zoneLocation, rooms }: ISearchMapProps) {
   }, [router.query]);
 
   return (
-    <div className="h-full flex-[0.5_1_0%]">
+    <div className="hidden sm:flex fixed bottom-0-0 right-0 w-[45%] h-full flex-[0.5_1_0%]">
       <ReactMapGL
         {...viewPort}
         mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_API_TOKEN}

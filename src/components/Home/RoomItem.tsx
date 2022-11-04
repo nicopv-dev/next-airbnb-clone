@@ -1,25 +1,55 @@
+import { useState } from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 import Room from '../../interfaces/Room';
 import { FiHeart } from 'react-icons/fi';
 import { IoStar, IoHeartSharp } from 'react-icons/io5';
 import { formatNumber, getDistance } from '../../utils/methods';
 import useGeoLocation from '../../hooks/useGeoLocation';
+import { useSession } from 'next-auth/react';
+import { likeRoom, unlikeRoom } from '../../requests/api';
 
 interface IRoomItemProps {
   room: Room;
 }
 
 export default function RoomItem({ room }: IRoomItemProps) {
-  const router = useRouter();
+  const [like, setLike] = useState<boolean>(room.isLike);
+  const [likeId, setLikeId] = useState<number>(room.likeId || 0);
   const myLocation = useGeoLocation();
+  const { data: session } = useSession();
 
   const goTo = (): void => {
-    router.push(`/rooms/${room.id}`);
+    window.open(`/rooms/${room.id}`, '_blank');
+    // router.push(`/rooms/${room.id}`);
+  };
+
+  const likeSubmit = async (): Promise<void> => {
+    try {
+      const response = await likeRoom(room.id, session?.user?.email);
+
+      const data = await response.json();
+      if (response.status === 201) {
+        setLike(true);
+        setLikeId(data.id);
+      }
+    } catch (e) {
+      alert(e.response);
+    }
+  };
+
+  const unlike = async (): Promise<void> => {
+    try {
+      const response = await unlikeRoom(likeId);
+      if (response.status === 202) {
+        setLike(false);
+      }
+    } catch (e) {
+      alert(e.response);
+    }
   };
 
   return (
-    <div onClick={goTo} className="hover:cursor-pointer">
+    <div className="hover:cursor-pointer">
       {/* image */}
       <div className="relative overflow-hidden rounded-2xl w-full">
         <Image
@@ -31,17 +61,29 @@ export default function RoomItem({ room }: IRoomItemProps) {
           layout="responsive"
           className="rounded-2xl transition-all duration-300 ease-out scale-100 hover:scale-105"
           quality={100}
+          onClick={goTo}
         />
-        <button className="absolute top-4 right-4">
-          {room.isLike ? (
+        {like ? (
+          <button
+            type="button"
+            className="absolute top-4 right-4"
+            onClick={unlike}
+          >
             <IoHeartSharp className="text-red-500 h-5 w-5" />
-          ) : (
+          </button>
+        ) : (
+          <button
+            type="button"
+            className="absolute top-4 right-4"
+            onClick={likeSubmit}
+          >
             <FiHeart className="text-white h-5 w-5" />
-          )}
-        </button>
+          </button>
+        )}
       </div>
+
       {/* info */}
-      <div className="mt-2">
+      <div className="mt-2" onClick={goTo}>
         <div className="flex items-center justify-between gap-2">
           <h1 className="font-semibold text-base line-clamp-1">
             {room.address}

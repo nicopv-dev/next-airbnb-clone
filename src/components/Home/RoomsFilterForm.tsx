@@ -3,40 +3,49 @@ import GuestsFilter from './Filters/GuestsFilter';
 import PriceFilter from './Filters/PriceFilter';
 import ServicesFilter from './Filters/ServicesFilter';
 import TypePropertyFilter from './Filters/TypePropertyFilter';
+import { useSelector } from 'react-redux';
+import { selectGuests, selectPrice } from '../../features/filterSlice';
 
 interface IRoomsFilterFormProps {
   onChangeShowModal: (value: boolean) => void;
-  priceRange: number[];
-  onChangePriceRange: (event: Event, newValue: number | number[]) => void;
   categoryActive: number;
 }
 
 export default function RoomsFilterForm({
   onChangeShowModal,
-  priceRange,
-  onChangePriceRange,
   categoryActive,
 }: IRoomsFilterFormProps) {
   const router = useRouter();
+  const price = useSelector(selectPrice);
+  const guests = useSelector(selectGuests);
 
   const applyFilter = () => {
-    router.push({
-      pathname: '/',
-      query: {
-        category: categoryActive,
-        min: priceRange[0] * 100000,
-        max: priceRange[1] * 100000,
-      },
-    });
+    if (price[0] === 0 && price[1] === 100) {
+      router.push({
+        pathname: '/',
+        query: {
+          category: categoryActive,
+          guests,
+        },
+      });
+      onChangeShowModal(false);
+    } else {
+      router.push({
+        pathname: '/',
+        query: {
+          category: categoryActive,
+          min: price[0] * 100000,
+          max: price[1] * 100000,
+          guests,
+        },
+      });
+    }
     onChangeShowModal(false);
   };
 
   return (
     <div className="py-4 px-8 divide-y">
-      <PriceFilter
-        priceRange={priceRange}
-        onChangePriceRange={onChangePriceRange}
-      />
+      <PriceFilter />
 
       <GuestsFilter />
 

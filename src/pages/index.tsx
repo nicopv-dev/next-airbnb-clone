@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import prisma from '../lib/prisma';
 import { GetServerSidePropsContext } from 'next';
 import { getSession } from 'next-auth/react';
@@ -11,6 +11,10 @@ import Category from '../interfaces/Category';
 import Room from '../interfaces/Room';
 import MainLayout from '../layouts/MainLayout';
 import RoomsFilterForm from '../components/Home/RoomsFilterForm';
+import { useRouter } from 'next/router';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectCategory, setCategory } from '../features/categorySlice';
+import useScroll from '../hooks/useScroll';
 
 interface IHomeProps {
   error: boolean;
@@ -19,17 +23,25 @@ interface IHomeProps {
 }
 
 const Home = ({ error, categories, rooms }: IHomeProps) => {
-  const [categoryActive, setCategoryActive] = useState<number>(1);
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [priceRange, setPriceRange] = useState<number[]>([0, 1000]);
+  const router = useRouter();
+  const { value: category } = useSelector(selectCategory);
+  const dispatch = useDispatch();
+  const scroll = useScroll();
 
-  const onChangePriceRange = (event: Event, newValue: number | number[]) => {
-    setPriceRange(newValue as number[]);
-  };
+  useEffect(() => {
+    if (router.query && router.query?.category) {
+      dispatch(
+        setCategory({ value: parseInt(router.query?.category as string) })
+      );
+    } else {
+      dispatch(setCategory({ value: 1 }));
+    }
+  }, [router.pathname]);
 
   // change category active
   const onChangeCategoryActive = (categoryId: number): void => {
-    setCategoryActive(categoryId);
+    dispatch(setCategory({ value: categoryId }));
   };
 
   // close or open modal
@@ -42,19 +54,33 @@ const Home = ({ error, categories, rooms }: IHomeProps) => {
       {error ? (
         <Error title="Error en el servidor" />
       ) : (
-        <div className="px-4 sm:px-10 md:px-12 lg:px-24 py-8 mt-14">
+        <div className="py-8 mt-14">
           {/* categories / filter */}
-          <div className="relative flex items-center justify-between gap-4 h-24">
-            <Categories
-              categories={categories}
-              categoryActive={categoryActive}
-              onChangeCategoryActive={onChangeCategoryActive}
-            />
-            <Filter onChangeShowModal={onChangeShowModal} />
+          <div
+            className={`px-4 sm:px-10 md:px-12 lg:px-24 w-full bg-white sticky top-20 lef-0 z-10 transition-all duration-300 border-b ${
+              scroll
+                ? 'shadow-md border-b-slate-200'
+                : 'shadow-none border-b-white'
+            }`}
+          >
+            <div
+              className={`relative flex items-center justify-between gap-4 ${
+                scroll ? 'h-min' : 'h-24'
+              }`}
+            >
+              <Categories
+                categories={categories}
+                categoryActive={category}
+                onChangeCategoryActive={onChangeCategoryActive}
+              />
+              <Filter onChangeShowModal={onChangeShowModal} />
+            </div>
           </div>
 
           {/* rooms */}
-          <Rooms rooms={rooms} />
+          <div className="px-4 sm:px-10 md:px-12 lg:px-24">
+            <Rooms rooms={rooms} />
+          </div>
           <Modal
             isOpen={showModal}
             onChangeShowModal={onChangeShowModal}
@@ -63,9 +89,7 @@ const Home = ({ error, categories, rooms }: IHomeProps) => {
           >
             <RoomsFilterForm
               onChangeShowModal={onChangeShowModal}
-              priceRange={priceRange}
-              onChangePriceRange={onChangePriceRange}
-              categoryActive={categoryActive}
+              categoryActive={category}
             />
           </Modal>
         </div>
@@ -76,11 +100,13 @@ const Home = ({ error, categories, rooms }: IHomeProps) => {
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const { query } = ctx;
+  // filters
   const categoryId: string = query?.category
     ? (query?.category as string)
     : '1';
   const minPrice: string = query?.min ? (query?.min as string) : '0';
   const maxPrice: string = query?.max ? (query?.max as string) : '10000000';
+  const guests: number = query?.guests ? parseInt(query?.guests as string) : 0;
 
   const session = await getSession(ctx);
 
@@ -97,6 +123,9 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       price: {
         gte: parseInt(minPrice),
         lte: parseInt(maxPrice),
+      },
+      guests: {
+        gte: guests,
       },
     },
     orderBy: {
@@ -139,6 +168,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     return {
       ...room,
       isLike: isLikeRoom,
+      likeId: likes.find((like) => like.roomId === room.id)?.id,
     };
   });
 
