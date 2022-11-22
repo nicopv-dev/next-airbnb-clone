@@ -32,12 +32,21 @@ export default function Modal({
     hidden: {
       y: '0',
       opacity: 0,
-      transition: { delay: 0.5, ease: 'easeOut', duration: 0.5 },
+      transition: {
+        delay: 0.5,
+        ease: 'easeOut',
+        duration: 0.5,
+      },
     },
     visible: {
-      y: '0',
+      x: { duration: 1 },
       opacity: 1,
-      transition: { delay: 0.5, ease: 'easeOut', duration: 0.6 },
+      transition: {
+        delay: 0.5,
+        ease: 'easeOut',
+        x: { duration: 1 },
+        default: { ease: 'linear' },
+      },
     },
   };
 

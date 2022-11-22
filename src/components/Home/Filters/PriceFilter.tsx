@@ -1,15 +1,16 @@
 import { Slider } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectPrice, setPrice } from '../../../features/filterSlice';
 import { formatNumber } from '../../../utils/methods';
 
-interface IPriceFilterProps {
-  onChangePriceRange: (event: Event, newValue: number | number[]) => void;
-  priceRange: number[];
-}
+export default function PriceFilter() {
+  const price = useSelector(selectPrice);
+  const dispatch = useDispatch();
 
-export default function PriceFilter({
-  onChangePriceRange,
-  priceRange,
-}: IPriceFilterProps) {
+  const onChangePrice = (event: Event, newValue: number | number[]) => {
+    dispatch(setPrice({ price: newValue as number[] }));
+  };
+
   return (
     <div className="py-8 px-4 space-y-2">
       <div>
@@ -19,8 +20,8 @@ export default function PriceFilter({
         </p>
         <Slider
           getAriaLabel={() => 'Temperature range'}
-          value={priceRange}
-          onChange={onChangePriceRange}
+          value={price}
+          onChange={onChangePrice}
           valueLabelDisplay="auto"
           getAriaValueText={(value: number) => `${value * 1000}°C`}
           valueLabelFormat={(targetValue) =>
@@ -30,21 +31,17 @@ export default function PriceFilter({
       </div>
       <div className="flex items-center gap-4">
         <div className="relative z-0 my-4 w-full group">
-          <input
-            type="text"
-            className="block py-2.5 w-full text-sm bg-transparent border-2 border-gray-300 appearance-none text-black outline-none peer px-4 rounded-lg"
-            value={priceRange[0] * 100000}
-          />
+          <p className="block py-2.5 w-full text-sm bg-transparent border-2 border-gray-300 appearance-none text-black outline-none peer px-4 rounded-lg">
+            {price[0] * 100000}
+          </p>
           <label className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-1 -z-10 origin-[0]">
             Precio Minimo
           </label>
         </div>
         <div className="relative z-0 my-4 w-full group">
-          <input
-            type="text"
-            className="block py-2.5 w-full text-sm bg-transparent border-2 border-gray-300 appearance-none text-black outline-none peer px-4 rounded-lg"
-            value={priceRange[1] * 100000}
-          />
+          <p className="block py-2.5 w-full text-sm bg-transparent border-2 border-gray-300 appearance-none text-black outline-none peer px-4 rounded-lg">
+            {formatNumber(price[1] * 100000)}
+          </p>
           <label className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-1 -z-10 origin-[0]">
             Precio Maximo
           </label>

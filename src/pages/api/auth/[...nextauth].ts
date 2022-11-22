@@ -15,7 +15,7 @@ export default NextAuth({
     }),
   ],
   adapter: PrismaAdapter(prisma),
-  secret: process.env.JWT_SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
   pages: {
     signIn: '/login',
   },
@@ -23,6 +23,12 @@ export default NextAuth({
     async signIn({ user }) {
       if (!user.email?.includes('@gmail.com')) return '/login';
       else return true;
+    },
+    async session({ session }) {
+      return session;
+    },
+    async jwt({ token }) {
+      return token;
     },
   },
 });

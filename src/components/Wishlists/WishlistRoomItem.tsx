@@ -5,6 +5,7 @@ import Room from '../../interfaces/Room';
 import Zone from '../../interfaces/Zone';
 import { formatNumber } from '../../utils/methods';
 import Like from '../Like';
+import { IoRemoveCircleOutline } from 'react-icons/io5';
 
 interface IWishlistRoomItemProps {
   room: Room;
@@ -25,7 +26,6 @@ export default function WishlistRoomItem({
   return (
     <div
       className="py-6 flex flex-col md:flex-row gap-6 hover:cursor-pointer"
-      onClick={goTo}
       onMouseEnter={() =>
         onChangeRoomZone({
           latitude: parseInt(room.lat),
@@ -34,7 +34,7 @@ export default function WishlistRoomItem({
       }
     >
       {/* image */}
-      <div>
+      <div onClick={goTo}>
         <Image
           alt={room.title}
           src={room.images[0].image.path}
@@ -48,9 +48,14 @@ export default function WishlistRoomItem({
       {/* info */}
       <div className="relative flex-grow flex flex-col justify-between">
         <section>
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between">
             <h3 className="text-black text-xs opacity-75">{room.title}</h3>
-            <Like isLiked={true} />
+            <div className="flex items-center flex-col">
+              <button type="button">
+                <IoRemoveCircleOutline className="h-5 w-5" />
+              </button>
+              {/* <Like isLiked={true} /> */}
+            </div>
           </div>
           <h2 className="text-lg font-semibold">{room.address}</h2>
           <p className="text-black text-sm opacity-75 mt-2">

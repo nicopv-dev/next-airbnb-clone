@@ -56,7 +56,7 @@ export default function Categories({
               <FiChevronLeft />
             </button>
           )}
-          <div className="flex items-center gap-12 overflow-x-scroll scrollbar-hide">
+          <div className="flex items-center gap-11 overflow-x-scroll scrollbar-hide">
             {categories?.map((category) => (
               <CategoryItem
                 key={category.id}

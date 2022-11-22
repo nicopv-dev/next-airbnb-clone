@@ -1,6 +1,6 @@
 import prisma from '../../lib/prisma';
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next';
-import Image from 'next/image';
+import { getSession } from 'next-auth/react';
 import Error from '../../components/Error';
 import Room from '../../interfaces/Room';
 import MainLayout from '../../layouts/MainLayout';
@@ -14,13 +14,16 @@ import Host from '../../components/Room/Host';
 import Map from '../../components/Room/Map';
 import Rules from '../../components/Room/Rules';
 import RoomReviews from '../../components/Room/RoomReviews';
+import Devolution from '../../components/Room/Devolution';
+import UserInfo from '../../components/Room/UserInfo';
 
 interface IRoomProps {
   room?: Room;
   error?: boolean;
+  isLike: boolean;
 }
 
-const Room: NextPage = ({ error, room }: IRoomProps) => {
+const Room: NextPage = ({ error, room, isLike }: IRoomProps) => {
   return (
     <MainLayout
       title={`${
@@ -32,7 +35,7 @@ const Room: NextPage = ({ error, room }: IRoomProps) => {
       ) : (
         <div className="min-h-screen py-14 sm:py-20 px-4 sm:px-10 md:px-20 lg:px-24">
           {/* header */}
-          <HomeHeader room={room} />
+          <HomeHeader room={room} isLike={isLike || false} />
 
           {/* gallery */}
           <Gallery images={room?.images} />
@@ -44,37 +47,10 @@ const Room: NextPage = ({ error, room }: IRoomProps) => {
               {/* left */}
               <div className="flex-1 lg:flex-[0.6_1_0%] xl:flex-[0.7_1_0%] mr-0 md:mr-10 space-y-10 divide-y">
                 {/* user description */}
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h1 className="font-medium text-2xl">
-                      Anfitrion: {room?.author?.name}
-                    </h1>
-                    <p>
-                      <span>{room?.guests} huespedes, </span>
-                      <span>1 habitación, 1 cama, 1 baño</span>
-                    </p>
-                  </div>
-                  {/* user image */}
-                  <div>
-                    <Image
-                      alt="user image"
-                      src="https://a0.muscache.com/im/pictures/user/22630b23-75df-4bf5-ac66-0a9f335c3fa7.jpg"
-                      width={50}
-                      height={50}
-                      className="object-cover rounded-full"
-                    />
-                  </div>
-                </div>
+                <UserInfo room={room} />
 
                 {/* devolution */}
-                <div className="pt-8">
-                  <p>
-                    Todas las reservaciones incluyen protección gratuita en caso
-                    de que el anfitrión cancele, de que haya imprecisiones en el
-                    anuncio o de que surjan otros inconvenientes, como problemas
-                    al momento de hacer el check-in.
-                  </p>
-                </div>
+                <Devolution />
 
                 {/* description */}
                 <div className="pt-8">
@@ -142,7 +118,15 @@ export const getServerSideProps: GetServerSideProps = async (
 ) => {
   const { room: id } = ctx.query;
 
-  const result = await prisma.room.findUnique({
+  const session = await getSession(ctx);
+
+  const user = await prisma.user.findUnique({
+    where: {
+      email: session ? (session?.user?.email as string) : '',
+    },
+  });
+
+  const room = await prisma.room.findUnique({
     where: {
       id: Number(id),
     },
@@ -171,7 +155,7 @@ export const getServerSideProps: GetServerSideProps = async (
     },
   });
 
-  if (!result) {
+  if (!room) {
     ctx.res.statusCode = 404;
     return {
       props: {
@@ -180,12 +164,32 @@ export const getServerSideProps: GetServerSideProps = async (
     };
   }
 
-  return {
-    props: {
-      room: JSON.parse(JSON.stringify(result)),
-      error: false,
-    },
-  };
+  if (user) {
+    const likes = await prisma.like.findMany({
+      where: {
+        userId: user.id,
+      },
+      include: {
+        user: true,
+      },
+    });
+    const isLike = likes.some((like) => like.roomId === room?.id);
+
+    return {
+      props: {
+        room: JSON.parse(JSON.stringify(room)),
+        isLike,
+        error: false,
+      },
+    };
+  } else {
+    return {
+      props: {
+        room: JSON.parse(JSON.stringify(room)),
+        error: false,
+      },
+    };
+  }
 };
 
 export default Room;
