@@ -21,5 +21,5 @@ export default function useScroll() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [goingUp]);
 
-  return goingUp;
+  return { goingUp, scrollYRef };
 }

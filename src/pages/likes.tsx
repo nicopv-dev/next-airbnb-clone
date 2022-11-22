@@ -3,16 +3,16 @@ import { getSession } from 'next-auth/react';
 import { GetServerSidePropsContext } from 'next';
 import prisma from '../lib/prisma';
 import Room from '../interfaces/Room';
+import LikesRooms from '../components/Likes/LikesRooms';
 
 interface ILikesProps {
   rooms: Room[];
 }
 
 export default function Likes({ rooms }: ILikesProps) {
-  console.log(rooms);
   return (
     <MainLayout title="Habitaciones que me gustan en Airbnb">
-      <div className="py-20">likes</div>
+      <LikesRooms rooms={rooms} />
     </MainLayout>
   );
 }
@@ -42,7 +42,21 @@ export const getServerSideProps: GetServerSideProps = async (
       userId: user ? (user?.id as number) : 0,
     },
     select: {
-      room: true,
+      room: {
+        select: {
+          id: true,
+          title: true,
+          address: true,
+          images: {
+            include: {
+              image: true,
+            },
+          },
+        },
+      },
+    },
+    orderBy: {
+      createdAt: 'desc',
     },
   });
 

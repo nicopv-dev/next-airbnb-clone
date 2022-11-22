@@ -10,7 +10,7 @@ interface IMainLayoutProps {
   title: string;
 }
 
-const conditions = ['whislists', 'profile'];
+const conditions = ['whislists', 'profile', 'likes'];
 
 export default function MainLayout({ children, title }: IMainLayoutProps) {
   const router = useRouter();

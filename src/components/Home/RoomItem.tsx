@@ -7,6 +7,7 @@ import { formatNumber, getDistance } from '../../utils/methods';
 import useGeoLocation from '../../hooks/useGeoLocation';
 import { useSession } from 'next-auth/react';
 import { likeRoom, unlikeRoom } from '../../requests/api';
+import { motion } from 'framer-motion';
 
 interface IRoomItemProps {
   room: Room;
@@ -63,23 +64,27 @@ export default function RoomItem({ room }: IRoomItemProps) {
           quality={100}
           onClick={goTo}
         />
-        {like ? (
-          <button
-            type="button"
-            className="absolute top-4 right-4"
-            onClick={unlike}
-          >
-            <IoHeartSharp className="text-red-500 h-5 w-5" />
-          </button>
-        ) : (
-          <button
-            type="button"
-            className="absolute top-4 right-4"
-            onClick={likeSubmit}
-          >
-            <FiHeart className="text-white h-5 w-5" />
-          </button>
-        )}
+        {session ? (
+          like ? (
+            <motion.button
+              type="button"
+              className="absolute top-4 right-4"
+              onClick={unlike}
+              whileHover={{ scale: 1.2 }}
+            >
+              <IoHeartSharp className="text-red-500 h-5 w-5" />
+            </motion.button>
+          ) : (
+            <motion.button
+              type="button"
+              className="absolute top-4 right-4"
+              onClick={likeSubmit}
+              whileHover={{ scale: 1.2 }}
+            >
+              <FiHeart className="text-white h-5 w-5" />
+            </motion.button>
+          )
+        ) : null}
       </div>
 
       {/* info */}

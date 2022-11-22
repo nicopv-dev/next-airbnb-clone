@@ -27,7 +27,7 @@ const Home = ({ error, categories, rooms }: IHomeProps) => {
   const router = useRouter();
   const { value: category } = useSelector(selectCategory);
   const dispatch = useDispatch();
-  const scroll = useScroll();
+  const { goingUp } = useScroll();
 
   useEffect(() => {
     if (router.query && router.query?.category) {
@@ -58,14 +58,14 @@ const Home = ({ error, categories, rooms }: IHomeProps) => {
           {/* categories / filter */}
           <div
             className={`px-4 sm:px-10 md:px-12 lg:px-24 w-full bg-white sticky top-20 lef-0 z-10 transition-all duration-300 border-b ${
-              scroll
+              goingUp
                 ? 'shadow-md border-b-slate-200'
                 : 'shadow-none border-b-white'
             }`}
           >
             <div
               className={`relative flex items-center justify-between gap-4 ${
-                scroll ? 'h-min' : 'h-24'
+                goingUp ? 'h-min' : 'h-24'
               }`}
             >
               <Categories
